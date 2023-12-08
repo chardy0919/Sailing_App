@@ -1,0 +1,29 @@
+[
+    {
+        "model": "underway_app.underway",
+        "pk": 1,
+        "fields": {
+            "captain": 1,
+            "route_name": "Voyage to the Unknown",
+            "description": "An exciting journey into the unknown.",
+            "start_date": "2023-12-15",
+            "location": "Sea of Adventure",
+            "manning": 5,
+            "duration": 14
+        }
+    },
+    {
+        "model": "underway_app.underway",
+        "pk": 2,
+        "fields": {
+            "captain": 2,
+            "route_name": "Island Expedition",
+            "description": "Exploring mysterious islands.",
+            "start_date": "2024-01-10",
+            "location": "Island Archipelago",
+            "manning": 3,
+            "duration": 21
+        }
+    }
+    
+]

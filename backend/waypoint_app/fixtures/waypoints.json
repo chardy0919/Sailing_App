@@ -1,0 +1,24 @@
+[
+    {
+        "model": "waypoint_app.waypoint",
+        "pk": 1,
+        "fields": {
+            "port_name": "Port A",
+            "region": "Region A",
+            "country_name": "Country A",
+            "lat": 10.1234567890,
+            "lng": 20.9876543210
+        }
+    },
+    {
+        "model": "waypoint_app.waypoint",
+        "pk": 2,
+        "fields": {
+            "port_name": "Port B",
+            "region": "Region B",
+            "country_name": "Country B",
+            "lat": 30.9876543210,
+            "lng": 40.1234567890
+        }
+    }
+]
