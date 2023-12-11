@@ -38,7 +38,6 @@ class Sign_Up(APIView):
         user_serializer = UserSerializer(data=request.data)
 
         if user_serializer.is_valid():
-            # user = user_serializer.save()
             token = Token.objects.create(user=user)
 
             return Response({
@@ -79,12 +78,19 @@ class Info(UserPermissions):
         user = CrewMemberSerializer(request.user)
         return Response(user.data)
     
+    # def put(self, request):
+    #     user =request.user
+    #     serializer = CrewMemberSerializer(user, data=request.data, partial = True)
+    #     if serializer.is_valid():
+    #         user.save()
+    #         return Response(serializer.data)
+    #     return Response(user.errors, status=HTTP_400_BAD_REQUEST)
+
     def put(self, request):
-        user = UserSerializer(request.user, data=request.data, partial = True)
-        if user.is_valid():
-            user.save()
-            return Response(user.data)
-        return Response(user.errors, status=HTTP_400_BAD_REQUEST)
+        user = UserSerializer(request.user)
+        serializer = user.update(instance=request.user, validated_data=request.data)    
+        return Response(CrewMemberSerializer(request.user).data)
+ 
 
 class Log_out(UserPermissions):
     def post(self, request):

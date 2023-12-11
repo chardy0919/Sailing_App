@@ -16,14 +16,19 @@ const NavBar = ({user, setUser}) => {
           navigate("/")
         }
       }
+
     return (
         <>
             <Row>
                 {user && (
                     <>
-                        <Link to="/">Home</Link>
+                        <Link to="/home">Home</Link>
                         <Link to="/myprofile">MyProfile</Link>
-                        <button onClick={handleLogout}>Logout</button>
+                        <Link to="/underway">Underway</Link>
+                        <div>
+                            <div>Welcome {user.first_name}</div>
+                            <button onClick={handleLogout}>Logout</button>
+                        </div> 
                     </>
                 )}
             </Row>

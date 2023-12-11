@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from .serializers import UnderWaySerializer
 from .models import UnderWay
-from user_app.views import UserPermissions
+from rest_framework.views import APIView
+# from user_app.views import UserPermissions
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
@@ -11,14 +14,17 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND
 )
 
+class UserPermissions(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class StartRoute(UserPermissions):
 
-    def get(self, request, underway_id):
+    def get(self, request):
         """Request User gets an underway object data"""
         try:
-            underway = UnderWay.objects.get(pk=underway_id)
-            serializer = UnderWaySerializer(underway)
+            user = request.user
+            serializer = UnderWaySerializer(request.user.captain.all(), many=True)
             return Response(serializer.data, status=HTTP_200_OK)
         except UnderWay.DoesNotExist:
             return Response("UnderWay not found", status=HTTP_404_NOT_FOUND)
