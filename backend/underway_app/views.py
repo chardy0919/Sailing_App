@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .serializers import UnderWaySerializer
 from .models import UnderWay
 from rest_framework.views import APIView
@@ -23,7 +23,6 @@ class StartRoute(UserPermissions):
     def get(self, request):
         """Request User gets an underway object data"""
         try:
-            user = request.user
             serializer = UnderWaySerializer(request.user.captain.all(), many=True)
             return Response(serializer.data, status=HTTP_200_OK)
         except UnderWay.DoesNotExist:
@@ -39,7 +38,6 @@ class StartRoute(UserPermissions):
         try:
             underway_data = {**request.data}
             underway = UnderWay.objects.create(**underway_data)
-            serializer = UnderWaySerializer(underway)
             return Response(UnderWaySerializer(underway).data, status=HTTP_201_CREATED)
         except Exception as e:
             print(e)
@@ -60,27 +58,38 @@ class StartRoute(UserPermissions):
 
 class UnderWayCrew(UserPermissions):
 
-    def put(self, request, underway_id):
-        """Request User joins matching underway crew"""
+    def get(self, request):
+        """Request User gets all underway objects with matching id in crew field data"""
         try:
-            underway = UnderWay.objects.get(pk=underway_id)
-            user = request.user
-            if underway.manning > underway.crew.count():
-                underway.crew.add(user)
-                return Response("User added to the crew successfully", status=HTTP_200_OK)
-            else:
-                return Response("Manning requirement met")
+            queryset = UnderWay.objects.filter(crew__contains=request.user.id).values()
+            print(queryset)
+            serializer = UnderWaySerializer(queryset, many=True)
+            return Response(serializer.data, status=HTTP_200_OK)
         except UnderWay.DoesNotExist:
             return Response("UnderWay not found", status=HTTP_404_NOT_FOUND)
         except Exception as e:
             print(e)
             return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, underway_id):
+        """Request User joins matching underway crew"""
+        underway = get_object_or_404(UnderWay, pk=underway_id)
+
+        # Check if the user is already in the crew
+        if request.user in underway.crew.all():
+            return Response("User is already in the crew", status=HTTP_400_BAD_REQUEST)
+
+        if underway.manning > underway.crew.count():
+            underway.crew.add(request.user)
+            return Response("User added to the crew successfully", status=HTTP_200_OK)
+        else:
+            return Response("Manning requirement met", status=HTTP_400_BAD_REQUEST)
     
 
     def delete(self, request, underway_id):
         """Remove member from the crew matching the underway ID"""
         try:
-            underway = UnderWay.objects.get(pk=underway_id)
+            underway = UnderWay.objects.get(id=underway_id)
             underway.crew.remove(request.user)
             return Response("Successfully left the crew", status=HTTP_204_NO_CONTENT)
         except UnderWay.DoesNotExist:
@@ -112,6 +121,20 @@ class UnderWayWayPoints(UserPermissions):
             return Response("Successfully removed waypoint", status=HTTP_204_NO_CONTENT)
         except UnderWay.DoesNotExist:
             return Response("UnderWay not found", status=HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print(e)
+            return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)
+        
+class AllUnderways(UserPermissions):
+
+    def get(self, request):
+        """Request for all underway data"""
+        try:
+            underway_crew_objects = UnderWay.objects.exclude(crew =request.user)
+            underway_captain_objects = UnderWay.objects.exclude(captain =request.user)
+            underway_objects = underway_crew_objects | underway_captain_objects
+            serializer = UnderWaySerializer(underway_objects, many=True)
+            return Response(serializer.data, status=HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)

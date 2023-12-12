@@ -8,7 +8,7 @@ from waypoint_app.serializers import WaypointSerializer
 class UnderWaySerializer(ModelSerializer):
 
     def get_crew_information(self, instance):
-        crew = instance.crew.all()  # Assuming 'crew' is a ManyToManyField in UnderWay
+        crew = instance.crew.all()
         return CrewMemberSerializer(crew, many=True).data
 
     crew_information = serializers.SerializerMethodField(method_name='get_crew_information')
@@ -22,6 +22,7 @@ class UnderWaySerializer(ModelSerializer):
     class Meta:
         model = UnderWay
         fields = [
+            "id",
             "captain",
             "route_name",
             "description",

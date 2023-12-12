@@ -13,22 +13,6 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
 )
 
-
-# class Sign_Up(APIView):
-#     def post(self, request):
-#         request.data["username"] = request.data["email"]
-#         user = User.objects.create_user(**request.data)
-#         serializer = UserSerializer(user)
-#         if serializer.is_valid():
-#             token = Token.objects.create(user=user)
-#             return Response({
-#                 "email": user.email,
-#                 "token": token.key
-#                 },
-#                 status=HTTP_201_CREATED,
-#             )
-#         else:
-#             return Response("Something went wrong creating a token", status=HTTP_400_BAD_REQUEST)
         
 class Sign_Up(APIView):
     def post(self, request):
