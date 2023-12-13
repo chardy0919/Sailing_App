@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFoundPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import UnderwayPage from "./pages/UnderwayPage";
+import EditUnderwayPage from "./pages/EditUnderwayPage";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           path: "/underway",
           element: <UnderwayPage />
         },
+        {
+          path:"/editunderway/:underway_id",
+          element:<EditUnderwayPage />
+        }
       ],
       errorElement: <NotFound />,
     },

@@ -20,10 +20,11 @@ class UserPermissions(APIView):
 
 class StartRoute(UserPermissions):
 
-    def get(self, request):
+    def get(self, request, underway_id):
         """Request User gets an underway object data"""
         try:
-            serializer = UnderWaySerializer(request.user.captain.all(), many=True)
+            underway_obj = UnderWay.objects.get(id=underway_id)
+            serializer = UnderWaySerializer(underway_obj)
             return Response(serializer.data, status=HTTP_200_OK)
         except UnderWay.DoesNotExist:
             return Response("UnderWay not found", status=HTTP_404_NOT_FOUND)
@@ -43,6 +44,18 @@ class StartRoute(UserPermissions):
             print(e)
             return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)
     
+    def put(self, request, underway_id):
+        """Request User Edits their underway"""
+        underway = get_object_or_404(UnderWay, pk=underway_id)
+        serializer = UnderWaySerializer(underway, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.update(underway, serializer.validated_data)
+            return Response(serializer.data, status=HTTP_200_OK)
+        else:
+            return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)
+
+    
 
     def delete(self, request, underway_id):
         """Deletes an underway"""
@@ -57,19 +70,6 @@ class StartRoute(UserPermissions):
             return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)
 
 class UnderWayCrew(UserPermissions):
-
-    def get(self, request):
-        """Request User gets all underway objects with matching id in crew field data"""
-        try:
-            queryset = UnderWay.objects.filter(crew__contains=request.user.id).values()
-            print(queryset)
-            serializer = UnderWaySerializer(queryset, many=True)
-            return Response(serializer.data, status=HTTP_200_OK)
-        except UnderWay.DoesNotExist:
-            return Response("UnderWay not found", status=HTTP_404_NOT_FOUND)
-        except Exception as e:
-            print(e)
-            return Response("Something went wrong", status=HTTP_400_BAD_REQUEST)
 
     def put(self, request, underway_id):
         """Request User joins matching underway crew"""
@@ -130,9 +130,7 @@ class AllUnderways(UserPermissions):
     def get(self, request):
         """Request for all underway data"""
         try:
-            underway_crew_objects = UnderWay.objects.exclude(crew =request.user)
-            underway_captain_objects = UnderWay.objects.exclude(captain =request.user)
-            underway_objects = underway_crew_objects | underway_captain_objects
+            underway_objects = UnderWay.objects.all()
             serializer = UnderWaySerializer(underway_objects, many=True)
             return Response(serializer.data, status=HTTP_200_OK)
         except Exception as e:

@@ -35,8 +35,6 @@ class Sign_Up(APIView):
 class Log_in(APIView):
     def post(self, request):
         try:
-            # email = request.data["email"]
-            # password = request.data["password"]
             email = request.data.get("email")
             password = request.data.get("password")
             user = authenticate(email=email, password=password)
@@ -61,14 +59,6 @@ class Info(UserPermissions):
     def get(self, request):
         user = CrewMemberSerializer(request.user)
         return Response(user.data)
-    
-    # def put(self, request):
-    #     user =request.user
-    #     serializer = CrewMemberSerializer(user, data=request.data, partial = True)
-    #     if serializer.is_valid():
-    #         user.save()
-    #         return Response(serializer.data)
-    #     return Response(user.errors, status=HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         user = UserSerializer(request.user)
@@ -82,3 +72,8 @@ class Log_out(UserPermissions):
         return Response("logged out successfully", status=HTTP_204_NO_CONTENT)
 
 
+class PublicInfo(APIView):
+    def get(self, request, user_id):
+        query= User.objects.get(id=user_id)
+        public_info=CrewMemberSerializer(query)
+        return Response(public_info.data)

@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import UnderWay
 from user_app.serializers import CrewMemberSerializer
 from waypoint_app.serializers import WaypointSerializer
+from user_app.models import User
 
 
 class UnderWaySerializer(ModelSerializer):

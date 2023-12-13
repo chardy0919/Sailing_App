@@ -3,6 +3,7 @@ import { api } from "../utilities"
 import { useOutletContext } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import UnderwayCard from '../components/UnderwayCard';
+import UserCrewCard from '../components/UserCrewCard';
 
 
 export default function MyProfilePage(context) {
@@ -11,14 +12,8 @@ export default function MyProfilePage(context) {
   const [lastName, setLastName] = useState("");
   const [qualifications, setQualifications] = useState("");
   const [underwayData, setUnderwayData] = useState([]);
-  const [routeName, setRouteName] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [location, setLocation] = useState("");
-  const [manning, setManning] = useState(0)
-  const [duration, setDuration] = useState(1);
   const { user, setUser } = useOutletContext();
-
+  const navigate = useNavigate();
 
   const toggleForm = () => {
     setEditForm(!editForm);
@@ -33,21 +28,24 @@ export default function MyProfilePage(context) {
             "qualifications":qualifications
         });
     api.defaults.headers.common["Authorization"] = `Token ${response.data.token}`;
+    navigate(0)
   }
+
 
   useEffect(() => {
     const getUnderwayData = async () => {
       try {
         const token = localStorage.getItem('token');
         api.defaults.headers.common["Authorization"] = `Token ${token}`;
-        const response = await api.get('underway/');
+        const response = await api.get('underway/allunderways/');
+        // console.log(response);
         setUnderwayData(response.data);
       } catch (error) {
         console.error('Error fetching Underway data:', error.response);
-        console.log(response.data.token)
+        console.log(error.response.data.token);
       }
     };
-    getUnderwayData();
+    getUnderwayData();  
   }, []);
 
   return (
@@ -92,24 +90,43 @@ export default function MyProfilePage(context) {
       </div>
       <div>
         <h3>Underways</h3>
-        <div>{console.log(underwayData)}</div>
         <div>
-            {underwayData.map((elem, idx)=>(
+            {underwayData.filter((elem)=>elem.captain==(user.id))
+            .map((elem, idx)=>(
               <UnderwayCard
                 key = {idx}
+                id = {elem.id}
+                captain={elem.captain}
                 routeName= {elem.route_name}
                 description= {elem.description}
                 startDate= {elem.start_date}
                 location= {elem.location}
                 manning= {elem.manning}
                 duration= {elem.duration}
+                crew= {elem.crew}
+                crewInformation= {elem.crew_information}
               />
             ))}
           </div>
         <div>
           <h3>Crews</h3>
+          <div>
+            {underwayData.filter((elem)=>elem.crew.includes(user.id))
+            .map((elem, idx)=>(
+              <UserCrewCard
+                key = {idx}
+                id = {elem.id}
+                routeName= {elem.route_name}
+                description= {elem.description}
+                startDate= {elem.start_date}
+                location= {elem.location}
+                manning= {elem.manning}
+                duration= {elem.duration}
+                crew= {elem.crew}
+              />
+            ))}
+          </div>
         </div>
-
       </div>
     </>
   );

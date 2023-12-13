@@ -33,13 +33,13 @@ class UnderWay(models.Model):
     )
     manning= models.IntegerField(
         blank=False,
-        null=False,
+        null=True,
         default=1,
         validators=[MinValueValidator(1)]
     )
     duration=models.IntegerField(
         blank=False,
-        null=False,
+        null=True,
         error_messages="invalid duration"
     )
 

@@ -7,15 +7,13 @@ export default function UnderwayPage() {
     const [description, setDescription] = useState("");
     const [startDate, setStartDate] = useState("");
     const [location, setLocation] = useState("");
-    const [manning, setManning] = useState(0)
-    const [duration, setDuration] = useState(1);
-
+    const [manning, setManning] = useState(null)
+    const [duration, setDuration] = useState(null);
+    const [searchValue, setSearchValue] = useState("")
+    
 
     const createUnderway = async(e) => {
         e.preventDefault();
-        // let user = response.data.user;
-        // let token = response.data.token;
-        // api.defaults.headers.common["Authorization"] = `Token ${response.data.token}`;
 
         let data = {
             "route_name" : routeName,
@@ -34,6 +32,19 @@ export default function UnderwayPage() {
         if (response.status === 201){
           window.location.reload()
         }
+    }
+
+
+    const handleSearch = async() => {
+        let response = await api.get(`waypoint/${searchValue}`)
+          .catch((err)=>{
+            alert("could not create Underway")
+            console.error(err)
+          })
+        if (response.status === 201){
+          window.location.reload()
+        }
+        setSearchValue('');
     }
 
 
@@ -80,6 +91,16 @@ return (
             />
             <button type="submit">Submit</button>
             <p>All fields are required</p>
+            <div>
+                <h3>Add waypoints to your trip.</h3>
+                <input 
+            type="text" 
+            placeholder="search" 
+            value={searchValue} 
+            onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <button onClick={()=> handleSearch()}>Search</button>
+            </div>
         </form>
     </>
     )
