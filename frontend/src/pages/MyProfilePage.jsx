@@ -89,7 +89,7 @@ export default function MyProfilePage(context) {
         )}
       </div>
       <div>
-        <h3>Underways</h3>
+        <h3>My Underways</h3>
         <div>
             {underwayData.filter((elem)=>elem.captain==(user.id))
             .map((elem, idx)=>(
@@ -109,7 +109,7 @@ export default function MyProfilePage(context) {
             ))}
           </div>
         <div>
-          <h3>Crews</h3>
+          <h3>Other Underways</h3>
           <div>
             {underwayData.filter((elem)=>elem.crew.includes(user.id))
             .map((elem, idx)=>(
