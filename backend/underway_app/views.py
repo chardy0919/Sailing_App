@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .serializers import UnderWaySerializer
 from .models import UnderWay
+from waypoint_app.serializers import WaypointSerializer
 from rest_framework.views import APIView
 # from user_app.views import UserPermissions
 from rest_framework.authentication import TokenAuthentication
@@ -11,7 +12,8 @@ from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND
+    HTTP_404_NOT_FOUND,
+    HTTP_500_INTERNAL_SERVER_ERROR
 )
 
 class UserPermissions(APIView):
@@ -100,6 +102,23 @@ class UnderWayCrew(UserPermissions):
         
 
 class UnderWayWayPoints(UserPermissions):
+
+    def post(self, request, underway_id):
+        """Create a new waypoint and add it to underway matching ID"""
+        try:
+            underway = UnderWay.objects.get(pk=underway_id)
+            serializer = WaypointSerializer(data=request.data)
+            if serializer.is_valid():
+                waypoint = serializer.save()
+                underway.waypoints.add(waypoint)
+                return Response("Successfully created and added waypoint", status=HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        except UnderWay.DoesNotExist:
+            return Response("UnderWay not found", status=HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print(e)
+            return Response("Something went wrong", status=HTTP_500_INTERNAL_SERVER_ERROR)
     
     def put(self, request, underway_id, waypoint_id):
         """Add waypoint to underway matching ID"""
