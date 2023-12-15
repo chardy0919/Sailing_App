@@ -1,5 +1,5 @@
 import { api } from "../utilities";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export  default function UserCrewCard(props){
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ export  default function UserCrewCard(props){
     return (
         <>
         <div>
-            <h4>{props.routeName}</h4>
+        <Link to={`/viewunderway/${props.id}`}>{props.routeName}</Link>
             <div>
                 <div>{props.description}</div>
                 <div>{props.startDate}</div>

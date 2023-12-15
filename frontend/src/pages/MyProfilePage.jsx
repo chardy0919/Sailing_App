@@ -12,7 +12,7 @@ export default function MyProfilePage(context) {
   const [lastName, setLastName] = useState("");
   const [qualifications, setQualifications] = useState("");
   const [underwayData, setUnderwayData] = useState([]);
-  const { user, setUser } = useOutletContext();
+  const { user } = useOutletContext();
   const navigate = useNavigate();
 
   const toggleForm = () => {
@@ -21,12 +21,13 @@ export default function MyProfilePage(context) {
 
   const editInfo = async(e) => {
     e.preventDefault();
+    let data = {};
+    if (firstName){data.first_name=firstName};
+    if (lastName){data.last_name=lastName};
+    if (qualifications){data.qualifications=qualifications}
+
     let response = await api.put(
-        "user/info/",{
-            "first_name": firstName,
-            "last_name":lastName,
-            "qualifications":qualifications
-        });
+        "user/info/", data);
     api.defaults.headers.common["Authorization"] = `Token ${response.data.token}`;
     navigate(0)
   }

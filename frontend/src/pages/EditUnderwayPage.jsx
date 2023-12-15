@@ -3,6 +3,7 @@ import { api } from "../utilities"
 import { useParams } from 'react-router-dom';
 import UnderwayCard from '../components/UnderwayCard';
 import WaypointCard from '../components/WaypointCard';
+import WeatherCard from '../components/WeatherCard';
 
 
 export default function EditUnderwayPage() {
@@ -98,12 +99,21 @@ return (
     </div>
     <div> 
         <h4>Your Waypoints</h4>
-        {underwayData.waypoint_information && underwayData.waypoint_information.map((elem,idx)=>(
+        {/* {underwayData.waypoint_information && underwayData.waypoint_information.map((elem,idx)=>(
           <ul key= {idx}>
             <li>Name: {elem.port_name}</li>
             <li>Location: {elem.region+' '+elem.country_name}</li>
             <li>Lat, Lng: {elem.lat+' , '+elem.lng}</li>
           </ul>
+        ))} */}
+        {underwayData.waypoint_information && underwayData.waypoint_information.map((elem,idx)=>(
+          <WeatherCard 
+            id= {elem.id}
+            portName={elem.port_name}
+            location={elem.region+', '+elem.country_name}
+            lat={elem.lat}
+            lng= {elem.lng}
+          />
         ))}
     </div>
   </div>)
@@ -170,13 +180,13 @@ return (
         (<div>
           {waypointData.map((elem,idx)=>(
             <WaypointCard
-              key = {idx}
-              underway_id = {underwayData.id}
-              portName= {elem.port_name}
-              region= {elem.region}
-              countryName= {elem.country_name}
-              lat= {elem.lat}
-              lng= {elem.lng}
+            key= {idx}
+            id= {underway_id}
+            portName={elem.port_name}
+            region = {elem.region}
+            countryName={elem.country_name}
+            lat={elem.lat}
+            lng= {elem.lng}
             />))}
         </div>
         )}

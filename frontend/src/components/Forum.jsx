@@ -31,7 +31,7 @@ export  default function Forum(props){
     return (
         <>
         <div>
-            <h4>{props.routeName}</h4>
+            <Link to={`/viewunderway/${props.id}`}>{props.routeName}</Link>
             <div>
                 <div>{captainData.first_name+' '+captainData.last_name}</div>
                 <div>{props.description}</div>
