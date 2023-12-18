@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
-import Row from "react-bootstrap/esm/Row";
 import { useNavigate } from "react-router-dom";
 import { api } from "../utilities"
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
+
 
 
 const NavBar = ({user, setUser}) => {  
@@ -17,23 +20,26 @@ const NavBar = ({user, setUser}) => {
         }
       }
 
-    return (
-        <>
-            <Row>
-                {user && (
-                    <>
-                        <Link to="/home">Home</Link>
-                        <Link to="/myprofile">MyProfile</Link>
-                        <Link to="/underway">Underway</Link>
-                        <div>
-                            <div>Welcome {user.first_name}</div>
-                            <button onClick={handleLogout}>Logout</button>
-                        </div> 
-                    </>
-                )}
-            </Row>
-        </>
-    );
+return (
+    <>
+    {user && (
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container >
+        <Navbar.Brand href="/home">Welcome {user.first_name}</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/home">Home</Nav.Link>
+            <Nav.Link href="/myprofile">MyProfile</Nav.Link>
+            <Nav.Link href="/underway">Underway</Nav.Link>
+            <button className="btn btn-link" onClick={handleLogout}>Logout</button>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+    )}
+   </> 
+  );
 };
 
 export default NavBar

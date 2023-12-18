@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from "../utilities"
 import { useOutletContext } from "react-router-dom";
 import Forum from '../components/Forum';
+import Container from 'react-bootstrap/Container';
 
 export default function HomePage() {
   const [underwayData, setUnderwayData] = useState([]);
@@ -25,26 +26,27 @@ export default function HomePage() {
 
   return (
     <>
+      <Container className="m-1">
       <h1>Find your next crew.</h1>
       <h2>Underways List</h2>
-        <div>
-            {underwayData.filter((elem)=>!elem.crew.includes(user.id)&&elem.captain != user.id)
-            .map((elem, idx)=>(
-              <Forum
-                key = {idx}
-                id = {elem.id}
-                captain = {elem.captain}
-                routeName= {elem.route_name}
-                description= {elem.description}
-                startDate= {elem.start_date}
-                location= {elem.location}
-                manning= {elem.manning}
-                duration= {elem.duration}
-                crew={elem.crew}
-              />
-            ))}
-          
-          </div>
+      <div className="card-grid">
+        {underwayData.filter((elem)=>!elem.crew.includes(user.id)&&elem.captain != user.id)
+        .map((elem, idx)=>(
+          <Forum
+            key = {idx}
+            id = {elem.id}
+            captain = {elem.captain}
+            routeName= {elem.route_name}
+            description= {elem.description}
+            startDate= {elem.start_date}
+            location= {elem.location}
+            manning= {elem.manning}
+            duration= {elem.duration}
+            crew={elem.crew}
+          />
+        ))}
+      </div>
+    </Container>
     </>
   )
 }
