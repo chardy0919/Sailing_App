@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
-import { api } from "../utilities"
+import { useState } from 'react';
+import { api } from "../utilities";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/esm/Container';
 
 
 export default function UnderwayPage() {
@@ -36,47 +39,55 @@ export default function UnderwayPage() {
 return (
     <>
     <h2>Create your Underway</h2>
-        <form onSubmit={(e) => createUnderway(e)}>
-            <input 
-                type="text" 
-                value={routeName}
-                placeholder='Name your underway'
-                onChange={(e) => setRouteName(e.target.value)} 
-            />
-            <textarea
-                cols="30"
-                rows="10"
-                value={description}
-                placeholder="Describe your journey."
-                onChange={(e) => setDescription(e.target.value)}
-            />
-            <input 
-                type="date" 
-                value={startDate}
-                placeholder='Start Date YYYY-MM-DD'
-                onChange={(e) => setStartDate(e.target.value)} 
-            />
-            <input 
-                type="text" 
-                value={location}
-                placeholder='Destination'
-                onChange={(e) => setLocation(e.target.value)} 
-            />
-            <input 
-                type="integer" 
-                value={manning}
-                placeholder='Manning Requirement'
-                onChange={(e) => setManning(e.target.value)} 
-            />
-            <input 
-                type="integer" 
-                value={duration}
-                placeholder='Expected duration in days'
-                onChange={(e) => setDuration(e.target.value)} 
-            />
-            <button type="submit">Submit</button>
-            <p>All fields are required</p>
-        </form>
+    <Container>
+        <Form onSubmit={(e) => createUnderway(e)}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label >Customize your Underway. All fields are required.</Form.Label>
+              <Form.Control 
+              type="text" 
+              value={routeName}
+              placeholder='Name your underway'
+              onChange={(e) => setRouteName(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              cols="30"
+              rows="10"
+              value={description}
+              placeholder="Describe your journey."
+              onChange={(e) => setDescription(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              type="date" 
+              value={startDate}
+              placeholder='Start Date YYYY-MM-DD'
+              onChange={(e) => setStartDate(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              type="text" 
+              value={location}
+              placeholder='Destination'
+              onChange={(e) => setLocation(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              type="integer" 
+              value={manning}
+              placeholder='Manning Requirement'
+              onChange={(e) => setManning(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              type="integer" 
+              value={duration}
+              placeholder='Expected duration in days.'
+              onChange={(e) => setDuration(e.target.value)} />
+          </Form.Group>
+          <Button type="submit">Submit</Button>
+        </Form>
+        </Container>
     </>
     )
 }

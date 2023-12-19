@@ -65,7 +65,7 @@ export default function RegisterPage() {
                     <Form.Control 
                     type="email" 
                     value={email}
-                    placeholder='Email'
+                    placeholder='youremail@mail.com'
                     onChange={(e) => setEmail(e.target.value)} />
                     <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
@@ -109,7 +109,7 @@ export default function RegisterPage() {
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
                     type="password" 
-                    placeholder="Password"
+                    placeholder="B1Gb0at54lyf3"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>

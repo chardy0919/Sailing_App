@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
 import { api } from "../utilities"
 import { useParams } from 'react-router-dom';
-import UnderwayCard from '../components/UnderwayCard';
+import { useNavigate } from "react-router-dom";
+import ViewCrewCard from '../components/ViewCrewCard';
 import WaypointCard from '../components/WaypointCard';
 import WeatherCard from '../components/WeatherCard';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroupItem from 'react-bootstrap/esm/ListGroupItem';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 export default function EditUnderwayPage() {
@@ -18,6 +26,7 @@ export default function EditUnderwayPage() {
   const {underway_id} = useParams();
   const [editForm, setEditForm] = useState(false);
   const [waypointData, setWaypointData] = useState([])
+  const navigate = useNavigate()
   
   const toggleForm = () => {
       setEditForm(!editForm);
@@ -57,8 +66,8 @@ export default function EditUnderwayPage() {
           console.error(err)
         })
       if (response.status === 201){
-        window.location.reload()
       }
+      navigate(0)
   }
 
   const handleSearch = async() => {
@@ -74,122 +83,134 @@ export default function EditUnderwayPage() {
 
 return (
   <>
-  <h2>{underwayData.route_name}</h2>
-  <div>
-    <ul>
-      <li>Name: {underwayData.route_name}</li>
-      <li>Description: {underwayData.description}</li>
-      <li>Start Date: {underwayData.start_date}</li>
-      <li>Location: {underwayData.location}</li>
-      <li>Manning: {underwayData.manning}</li>
-      <li>Duration: {underwayData.duration} days</li>
-    </ul>
-  </div>
-  {underwayData
-  ?
-  (<div>
-    <div>
-        <h4>Your Crew</h4>
-        {underwayData.crew_information && underwayData.crew_information.map((elem, idx)=>(
-          <ul key = {idx}>
-            <li>Name: {elem.first_name+' '+elem.last_name}</li>
-            <li>Qualification: {elem.qualifications}</li>
-          </ul>
-        ))}
-    </div>
-    <div> 
-        <h4>Your Waypoints</h4>
-        {/* {underwayData.waypoint_information && underwayData.waypoint_information.map((elem,idx)=>(
-          <ul key= {idx}>
-            <li>Name: {elem.port_name}</li>
-            <li>Location: {elem.region+' '+elem.country_name}</li>
-            <li>Lat, Lng: {elem.lat+' , '+elem.lng}</li>
-          </ul>
-        ))} */}
-        {underwayData.waypoint_information && underwayData.waypoint_information.map((elem,idx)=>(
-          <WeatherCard 
-            id= {elem.id}
-            portName={elem.port_name}
-            location={elem.region+', '+elem.country_name}
-            lat={elem.lat}
-            lng= {elem.lng}
-          />
-        ))}
-    </div>
-  </div>)
-  :
-  <p>loading</p>
-}
-  
-  
-  <button onClick={toggleForm}>Edit</button>
-    {editForm && (
-      <form onSubmit={(e) => editUnderway(e)}>
-        <input 
-          type="text" 
-          value={routeName}
-          placeholder={underwayData.route_name}
-          onChange={(e) => setRouteName(e.target.value)} 
+  <Container>
+    <h2>{underwayData.route_name}</h2>
+    <ListGroup variant="flush" className="list">
+    <ListGroupItem>Description: {underwayData.description}</ListGroupItem>
+    <ListGroupItem>Start Date: {underwayData.start_date}</ListGroupItem>
+    <ListGroupItem>Location: {underwayData.location}</ListGroupItem>
+    <ListGroupItem>Manning: {underwayData.manning}</ListGroupItem>
+    <ListGroupItem>Duration: {underwayData.duration} days</ListGroupItem>
+    </ListGroup>
+    {underwayData
+    ?
+    (<div>
+      <h4>Your Crew</h4>
+      {underwayData.crew_information && underwayData.crew_information.map((elem, idx)=>(
+        <ViewCrewCard 
+          name={elem.first_name+' '+elem.last_name}
+          qualifications={elem.qualifications}
         />
-        <textarea
-          cols="30"
-          rows="10"
-          value={description}
-          placeholder={underwayData.description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <input 
-          type="date" 
-          value={startDate}
-          placeholder={underwayData.startDate}
-          onChange={(e) => setStartDate(e.target.value)} 
-        />
-        <input 
-          type="text" 
-          value={location}
-          placeholder={underwayData.location}
-          onChange={(e) => setLocation(e.target.value)} 
-        />
-        <input 
-          type="integer" 
-          value={manning}
-          placeholder={underwayData.manning}
-          onChange={(e) => setManning(e.target.value)} 
-        />
-        <input 
-          type="integer" 
-          value={duration}
-          placeholder={underwayData.duration}
-          onChange={(e) => setDuration(e.target.value)} 
-        />
-        <button type="submit">Submit</button>
-        <p>All fields are required</p>
-      </form>
-    )}
-      <div>
-        <h3>Add waypoints to your trip.</h3>
-        <input 
-          type="text" 
-          placeholder="search" 
-          value={searchValue} 
-          onChange={(e) => setSearchValue(e.target.value)}
-          />
-        <button onClick={()=> handleSearch()}>Search</button>
+      ))}
+      <div> 
+          <h4>Your Waypoints</h4>
+          {underwayData.waypoint_information && underwayData.waypoint_information.map((elem,idx)=>(
+            <WeatherCard 
+              id= {elem.id}
+              portName={elem.port_name}
+              location={elem.region+', '+elem.country_name}
+              lat={elem.lat}
+              lng= {elem.lng}
+            />
+          ))}
       </div>
-      {waypointData &&
-        (<div>
-          {waypointData.map((elem,idx)=>(
-            <WaypointCard
-            key= {idx}
-            id= {underway_id}
-            portName={elem.port_name}
-            region = {elem.region}
-            countryName={elem.country_name}
-            lat={elem.lat}
-            lng= {elem.lng}
-            />))}
-        </div>
-        )}
+    </div>)
+    :
+    <p>loading</p>
+  }
+    <button className="btn btn-link" onClick={toggleForm}>Edit</button>
+      {editForm && (
+        <Form onSubmit={(e) => editUnderway(e)}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label >Edit your underway.</Form.Label>
+          <Form.Control  
+            type="text" 
+            value={routeName}
+            placeholder={underwayData.route_name}
+            onChange={(e) => setRouteName(e.target.value)}/>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control 
+            cols="30"
+            rows="10"
+            value={description}
+            placeholder={underwayData.description}
+            onChange={(e) => setDescription(e.target.value)}/>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control 
+            type="date" 
+            value={startDate}
+            placeholder={underwayData.startDate}
+            onChange={(e) => setStartDate(e.target.value)}/> 
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control  
+            type="text" 
+            value={location}
+            placeholder={underwayData.location}
+            onChange={(e) => setLocation(e.target.value)}/> 
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control 
+            type="integer" 
+            value={manning}
+            placeholder={underwayData.manning}
+            onChange={(e) => setManning(e.target.value)}/> 
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control  
+            type="integer" 
+            value={duration}
+            placeholder={underwayData.duration}
+            onChange={(e) => setDuration(e.target.value)}/> 
+          </Form.Group>
+          <Button type="submit">Submit</Button>
+          <p>All fields are required</p>
+        </Form>
+      )}
+        {/* <div>
+          <h3>Add waypoints to your trip.</h3>
+          <input 
+            type="text" 
+            placeholder="search" 
+            value={searchValue} 
+            onChange={(e) => setSearchValue(e.target.value)}
+            />
+          <Button size={'sm'} onClick={()=> handleSearch()}>Search</Button>
+        </div> */}
+        <Row>
+        <Col>
+        <Form inline>
+          <Form.Control 
+            type="text" 
+            placeholder="Add a Waypoint"
+            value={searchValue} 
+            onChange={(e) => setSearchValue(e.target.value)} 
+            className="mr-sm-2" />
+        </Form>
+        </Col>
+        <Col>
+        <Button onClick={()=> handleSearch()}>Search</Button>
+        </Col>
+        </Row>
+        <Container className="card-grid">
+        {waypointData &&
+          (<div className="card-grid">
+            {waypointData.map((elem,idx)=>(
+              <WaypointCard
+              key= {idx}
+              id= {underway_id}
+              portName={elem.port_name}
+              region = {elem.region}
+              countryName={elem.country_name}
+              lat={elem.lat}
+              lng= {elem.lng}
+              />))}
+          </div>
+          )}
+        </Container>
+  </Container>
   </>
   )
 }

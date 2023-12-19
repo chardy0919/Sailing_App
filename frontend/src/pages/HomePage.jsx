@@ -26,10 +26,10 @@ export default function HomePage() {
 
   return (
     <>
-      <Container className="m-1">
+      <Container>
       <h1>Find your next crew.</h1>
       <h2>Underways List</h2>
-      <div className="card-grid">
+      <Container className="card-grid">
         {underwayData.filter((elem)=>!elem.crew.includes(user.id)&&elem.captain != user.id)
         .map((elem, idx)=>(
           <Forum
@@ -45,7 +45,7 @@ export default function HomePage() {
             crew={elem.crew}
           />
         ))}
-      </div>
+      </Container>
     </Container>
     </>
   )

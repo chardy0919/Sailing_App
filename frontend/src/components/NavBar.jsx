@@ -31,7 +31,7 @@ return (
           <Nav className="me-auto">
             <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/myprofile">MyProfile</Nav.Link>
-            <Nav.Link href="/underway">Underway</Nav.Link>
+            <Nav.Link href="/underway">Create</Nav.Link>
             <button className="btn btn-link" onClick={handleLogout}>Logout</button>
           </Nav>
         </Navbar.Collapse>

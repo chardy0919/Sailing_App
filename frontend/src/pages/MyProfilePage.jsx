@@ -4,6 +4,13 @@ import { useOutletContext } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import UnderwayCard from '../components/UnderwayCard';
 import UserCrewCard from '../components/UserCrewCard';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/esm/Container';
+import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroupItem from 'react-bootstrap/esm/ListGroupItem';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 
 export default function MyProfilePage(context) {
@@ -51,47 +58,59 @@ export default function MyProfilePage(context) {
 
   return (
     <>
-      <h2>MyProfile</h2>
-      <div>
+      <Container >
+        <Row>
+        <Col>
+          <Row >
+            <Col><h2>MyProfile</h2></Col>
+            <Col className="flex justify-end btn btn-link"><button onClick={toggleForm}>Edit</button></Col>
+          </Row>
+      <Container>
         {user ? (
-          <div>
-            <ul>
-              <li>First Name: {user.first_name}</li>
-              <li>Last Name: {user.last_name}</li>
-              <li>Qualifications: {user.qualifications}</li>
-            </ul>
-          </div>
+          <ListGroup variant="flush">
+            <ListGroupItem>{user.first_name}</ListGroupItem>
+            <ListGroupItem>{user.last_name}</ListGroupItem>
+            <ListGroupItem>{user.qualifications}</ListGroupItem>
+          </ListGroup>
         ) : (
           <p>Loading user data...</p>
         )}
-        <button onClick={toggleForm}>Edit</button>
+        
         {editForm && (
-          <form onSubmit={(e) => editInfo(e)}>
-            <input
-              type="text"
+          <Form onSubmit={(e) => editInfo(e)}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label >Change your profile.</Form.Label>
+              <Form.Control 
+              type="text" 
               value={firstName}
-              placeholder="First Name"
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              type="text"
+              placeholder='First Name'
+              onChange={(e) => setFirstName(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              type="text" 
               value={lastName}
-              placeholder="Last Name"
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            <input
-              type="text"
+              placeholder='Last Name'
+              onChange={(e) => setLastName(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control 
+              type="text" 
               value={qualifications}
-              placeholder="Qualifications"
-              onChange={(e) => setQualifications(e.target.value)}
-            />
-            <button type="submit">Submit</button>
-          </form>
+              placeholder='Qualifications'
+              onChange={(e) => setQualifications(e.target.value)} />
+          </Form.Group>
+          <Button type="submit">Submit</Button>
+          </Form>
         )}
-      </div>
-      <div>
+        </Container>
+        </Col>
+        <Col xs={6}></Col>
+        </Row>
+      </Container>
+      <Container>
         <h3>My Underways</h3>
-        <div>
+        <Container className="card-grid">
             {underwayData.filter((elem)=>elem.captain==(user.id))
             .map((elem, idx)=>(
               <UnderwayCard
@@ -108,10 +127,9 @@ export default function MyProfilePage(context) {
                 crewInformation= {elem.crew_information}
               />
             ))}
-          </div>
-        <div>
+          </Container>
           <h3>Other Underways</h3>
-          <div>
+          <Container className="card-grid">
             {underwayData.filter((elem)=>elem.crew.includes(user.id))
             .map((elem, idx)=>(
               <UserCrewCard
@@ -126,9 +144,8 @@ export default function MyProfilePage(context) {
                 crew= {elem.crew}
               />
             ))}
-          </div>
-        </div>
-      </div>
+          </Container>
+        </Container>
     </>
   );
 }

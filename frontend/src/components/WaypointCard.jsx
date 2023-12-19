@@ -1,5 +1,8 @@
 import { api } from "../utilities";
 import { useNavigate } from "react-router-dom";
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 
 export  default function WaypointCard(props){
     const navigate = useNavigate();
@@ -24,15 +27,14 @@ export  default function WaypointCard(props){
     };
     return (
         <>
-        <div>
-            <h4>{props.portName}</h4>
-            <div>
-                <div>{props.region}, {props.countryName}</div>
-                <div>{props.lat}, {props.lng}</div>
-                <div></div>
-            </div>
-            <button onClick={(e)=>addWaypoint(e)}>Add</button>
-        </div>
+        <Card style={{ width: '18rem' }}>
+        <Container className="p-3">
+            <Card.Title>{props.portName}</Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">{props.region}, {props.countryName}</Card.Subtitle>
+            <Card.Text>{props.lat}, {props.lng}</Card.Text>
+            <Button onClick={(e)=>addWaypoint(e)}>Add</Button>
+        </Container>
+        </Card>
         </>
     );
 }

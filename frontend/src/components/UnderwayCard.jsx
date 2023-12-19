@@ -1,7 +1,9 @@
 import {useState, useEffect} from 'react';
 import { api } from "../utilities";
-import WaypointCard from './WaypointCard';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 export  default function UnderwayCard(props){
   const navigate= useNavigate()
@@ -31,34 +33,21 @@ export  default function UnderwayCard(props){
     }
   return (
     <>
-    <div>
-        <Link to={`/editunderway/${props.id}`}>{props.routeName}</Link>
-        <div>
-          <div>{captainData.first_name+' '+captainData.last_name}</div>
-          <div>{props.description}</div>
-          <div>{props.startDate}</div>
-          <div>{props.location}</div>
-          <div>{props.duration} days</div>
-          <div>{props.crew.length +' out of '+ props.manning +' have joined this crew.'}</div>
-          {/* <div>{props.crewInformation}</div> */}
-        </div>
-        <div>
-        {props.waypointInformation &&
-        (<div>
-          {props.waypointInformation.map((elem,idx)=>(
-            <WaypointCard
-              key = {idx}
-              portName= {elem.port_name}
-              region= {elem.region}
-              countryName= {elem.country_name}
-              lat= {elem.lat}
-              lng= {elem.lng}
-            />))}
-        </div>
-        )}
-        </div>
-        <button onClick={deleteUnderway}>Delete</button>
-      </div>
+      <Card>
+      <Card.Body>
+        <Card.Title >{props.routeName}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{captainData.first_name+' '+captainData.last_name}</Card.Subtitle>
+        <Card.Text>{props.description}</Card.Text>
+        <ListGroup variant="flush">
+        <ListGroup.Item>Departs: {props.startDate}</ListGroup.Item>
+        <ListGroup.Item>Destination: {props.location}</ListGroup.Item>
+        <ListGroup.Item>{props.duration} Day Trip</ListGroup.Item>
+        <ListGroup.Item>{props.crew.length +' out of '+ props.manning +' have joined this crew.'}</ListGroup.Item>
+        </ListGroup>
+        <Card.Link href={`/editunderway/${props.id}`}>Edit Underway</Card.Link>
+      </Card.Body>
+        <Button variant="danger" onClick={deleteUnderway}>Delete</Button>
+      </Card>
     </>
   );
 }

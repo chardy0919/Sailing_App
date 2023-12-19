@@ -1,5 +1,9 @@
 import { api } from "../utilities";
 import { useNavigate, Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+
 
 export  default function UserCrewCard(props){
     const navigate = useNavigate();
@@ -13,17 +17,20 @@ export  default function UserCrewCard(props){
       }
     return (
         <>
-        <div>
-        <Link to={`/viewunderway/${props.id}`}>{props.routeName}</Link>
-            <div>
-                <div>{props.description}</div>
-                <div>{props.startDate}</div>
-                <div>{props.location}</div>
-                <div>{props.duration} days</div>
-                <div>{props.crew.length+' out of '+props.manning+' have joined this crew.'}</div>
-            </div>
-            <button onClick={(e)=>leaveCrew(e)}>Leave</button>
-        </div>
+        <Card style={{ width: '18rem' }}>
+        <Card.Body>
+            <Card.Title>{props.routeName}</Card.Title>
+            <Card.Text>{props.description}</Card.Text>
+            <ListGroup variant="flush">
+                <ListGroup.Item>{props.startDate}</ListGroup.Item>
+                <ListGroup.Item>{props.location}</ListGroup.Item>
+                <ListGroup.Item>{props.duration} days</ListGroup.Item>
+                <ListGroup.Item>{props.crew.length+' out of '+props.manning+' have joined this crew.'}</ListGroup.Item>
+            </ListGroup>
+            <Card.Link href={`/viewunderway/${props.id}`}>Go to this Underway</Card.Link>
+        </Card.Body>
+        <Button variant="warning" onClick={(e)=>leaveCrew(e)}>Leave</Button>
+        </Card>
         </>
     );
 }

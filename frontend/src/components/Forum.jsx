@@ -32,21 +32,9 @@ export  default function Forum(props){
 
   return (
   <>
-  {/* <div>
-      <Link to={`/viewunderway/${props.id}`}>{props.routeName}</Link>
-    <div>
-      <div>{captainData.first_name+' '+captainData.last_name}</div>
-      <div>{props.description}</div>
-      <div>{props.startDate}</div>
-      <div>{props.location}</div>
-      <div>{props.duration} days</div>
-      <div>{props.crew.length+' out of '+props.manning+' have joined this crew.'}</div>
-    </div>
-      <button onClick={joinCrew}>Join</button>
-  </div> */}
   <Card style={{ width: '18rem' }}>
     <Card.Body>
-      <Card.Title href={`/viewunderway/${props.id}`}>{props.routeName}</Card.Title>
+      <Card.Title>{props.routeName}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">{captainData.first_name+' '+captainData.last_name}</Card.Subtitle>
       <Card.Text>
         {props.description} 
