@@ -54,9 +54,9 @@ export default function RegisterPage() {
     return (
         <>
         <Row>
-        <Col sm={6}></Col>
+        <Col sm={3}></Col>
         <Col>
-        <div className="mx-auto max-w-md p-4">
+        <div className="mx-auto max-w-md">
             <h2 className='text-center'>{isSignUp ? 'Sign-Up Form' : 'Log-In Form'}</h2>
             {isSignUp ? (
                 <Form onSubmit={(e) => signUp(e)}>
@@ -140,7 +140,7 @@ export default function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
                 <Row >
-                    <Col sm={7}>
+                    <Col sm={5}>
                         <Button size="sm" variant="primary" type="submit">
                         Submit
                         </Button>

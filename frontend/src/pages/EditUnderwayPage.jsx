@@ -169,16 +169,6 @@ return (
           <p>All fields are required</p>
         </Form>
       )}
-        {/* <div>
-          <h3>Add waypoints to your trip.</h3>
-          <input 
-            type="text" 
-            placeholder="search" 
-            value={searchValue} 
-            onChange={(e) => setSearchValue(e.target.value)}
-            />
-          <Button size={'sm'} onClick={()=> handleSearch()}>Search</Button>
-        </div> */}
         <Row>
         <Col>
         <Form inline>
@@ -194,9 +184,7 @@ return (
         <Button onClick={()=> handleSearch()}>Search</Button>
         </Col>
         </Row>
-        <Container className="card-grid">
-        {waypointData &&
-          (<div className="card-grid">
+        <Container className="card-container">
             {waypointData.map((elem,idx)=>(
               <WaypointCard
               key= {idx}
@@ -207,8 +195,6 @@ return (
               lat={elem.lat}
               lng= {elem.lng}
               />))}
-          </div>
-          )}
         </Container>
   </Container>
   </>

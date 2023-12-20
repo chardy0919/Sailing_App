@@ -27,6 +27,7 @@ export  default function WaypointCard(props){
     };
     return (
         <>
+        <div className="waypoint-card">
         <Card style={{ width: '18rem' }}>
         <Container className="p-3">
             <Card.Title>{props.portName}</Card.Title>
@@ -35,6 +36,7 @@ export  default function WaypointCard(props){
             <Button onClick={(e)=>addWaypoint(e)}>Add</Button>
         </Container>
         </Card>
+        </div>
         </>
     );
 }

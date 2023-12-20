@@ -6,7 +6,14 @@ body {
     margin: 0;
     padding: 0;
     background-image: url('https://images.pexels.com/photos/273886/pexels-photo-273886.jpeg');
-    background-size: cover;
+    background-size: fill;
     background-position: center;
-    /* background-repeat: no-repeat; */
-  }
+    height: auto;
+    background-repeat: no-repeat;
+} 
+
+mx-auto max-w-md {
+  /* Check if there's a fixed height set for your container */
+  /* Try removing any fixed height or setting it to auto */
+  height: auto;
+} 
