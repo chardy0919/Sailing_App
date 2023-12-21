@@ -57,7 +57,8 @@ export default function RegisterPage() {
         <Col sm={3}></Col>
         <Col>
         <div className="mx-auto max-w-md">
-            <h2 className='text-center'>{isSignUp ? 'Sign-Up Form' : 'Log-In Form'}</h2>
+            <h2 className='text-center mt-10'>Get Underway</h2>
+                <p className='text-center'>by Cody Hardy</p>
             {isSignUp ? (
                 <Form onSubmit={(e) => signUp(e)}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -151,9 +152,7 @@ export default function RegisterPage() {
                     <Col>
                         <Button onClick={toggleForm} size="sm">{isSignUp ? 'Log-In!':'Sign-Up!'}</Button>
                     </Col> 
-                </Row>
-
-                
+                </Row>   
             </Form>
             )}
         </div>

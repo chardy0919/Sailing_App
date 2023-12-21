@@ -45,38 +45,7 @@ class WaypointSearch(APIView):
 
         return Response(("Waypoints:", waypoints))
 
-class WaypointWeather(APIView):
-#     def get(self, request, waypoint_id):
-
-#         waypoint_obj= WayPoint.objects.get(id=waypoint_id)
-
-#         env =   dotenv_values(".env")
-#         key = env.get('STORMGLASSKEY')
-
-#         response = requests.get(
-#             'https://api.stormglass.io/v2/weather/point',
-#             params={
-#                 'lat': waypoint_obj.lat,
-#                 'lng': waypoint_obj.lng,
-#                 'params': ','.join([
-#                     'visibility',
-#                     'windDirection',
-#                     'windSpeed',
-#                     'gust',
-#                     'airTemperature',
-#                     'waterTemperature',
-#                     'waveHeight',
-#                     'swellHeight',
-#                     'swellDirection',
-#                     ])
-#             },
-#             headers={
-#                 'Authorization': key
-#             }
-#         )
-#         json_data = response.json()
-#         return Response(json_data)
-    
+class WaypointWeather(APIView):   
 
     def get(self, request, waypoint_id):
 
